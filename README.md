@@ -1,23 +1,30 @@
-# AI Market Regime Detection & Quant Research Platform
+# Options Pricing Model
 
 ## By Sergio Insuasti
 
 ### About
-Designing a full-stack research system to identify market regimes using
-unsupervised ML and evaluate strategy performance conditional on regime states.
-The plan will then be to refactor the project to a reusable research platform
-with experiment versioning, persistent storage and interactive dashboards.
+Designing a full-stack dashboard which explores the three most common
+theoretical option pricing models: Black Scholes, Monte Carlo and Binomial.
+
 
 ### Directory
-market-regimes/
-├── data/
-├── notebooks/
-├── src/
-│   ├── features/
+option_pricer/
+├── option_pricer/          # pricing library (NO UI CODE)
 │   ├── models/
-│   ├── backtest/
-│   └── utils/
-├── app/          # frontend later
-├── api/          # backend later
+│   │   ├── black_scholes.py
+│   │   ├── binomial.py
+│   │   └── monte_carlo.py
+│   ├── greeks/
+│   ├── implied_vol/
+│   └── core/
+├── dashboard/
+│   └── app.py              # Streamlit UI
+├── tests/
 └── README.md
+
+## PHASE 1: INTERACTIVE DASHBOARD
+For this phase, my intention is to create an interactive dashboard through my knowledge
+of Python. With this dashboard users can configure option parameters,
+run the three most popular option pricing models and compare prices, Greeks,
+convergence and uncertainty.
 
