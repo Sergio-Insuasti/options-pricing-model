@@ -28,3 +28,9 @@ of Python. With this dashboard users can configure option parameters,
 run the three most popular option pricing models and compare prices, Greeks,
 convergence and uncertainty.
 
+For the frontend dashboard, I have made the decision to use StreamLit instead
+of React. StreamLit is a frontend library that has native widgets such as sliders
+and contains zero frontend overhead. Its simplicity is widely used by researchers
+and will highlight the intended simplicity of this software.
+
+
