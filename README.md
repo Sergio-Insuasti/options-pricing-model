@@ -114,5 +114,15 @@ multitudes of data streams.
 Following this, a "connection" needs to be made on the front end side to efficiently
 call this function to determine option pricing.
 
+### Assumptions:
+- The original BS Model assumes that the option is a European-style option and can only be exercised at expiration
+- No dividends are paid out during the option's life cycle
+- Market movements follow a random walk
+- There are no transaction costs in buying an option
+- Risk-free rate and volatility are known and constant
+- The underlying price of an option (S) follows a log-normal distribution
+
+
+
 
 

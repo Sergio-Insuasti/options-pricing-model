@@ -13,7 +13,8 @@ st.set_page_config(
 )
 
 st.title("Option Pricing Models Dashboard")
-st.subheader("By Sergio Insuasti")
+LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
+st.subheader(f"By [Sergio Insuasti]({LI_url})")
 
 # ===============================
 # Helper: Synced Slider + Number Input
