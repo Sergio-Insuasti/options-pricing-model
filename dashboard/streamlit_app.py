@@ -181,7 +181,7 @@ with tab1:
 
     col1, col2, col3 = st.columns(3)
 
-    col1.metric("Black–Scholes Price", "—")
+    col1.metric("Black Scholes Price", "—")
     col2.metric("Binomial Price", "—")
     col3.metric("Monte Carlo Price", "—")
 
