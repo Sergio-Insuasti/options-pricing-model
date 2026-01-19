@@ -18,7 +18,7 @@ option_pricer/
 │   ├── implied_vol/
 │   └── core/
 ├── dashboard/
-│   └── app.py              # Streamlit UI
+│   └── streamlit_app.py              # Streamlit UI
 ├── tests/
 └── README.md
 
@@ -68,5 +68,51 @@ print(f'The value of d2 is: {round(d2, 4)}')
 print(f'The price of the call option is: ${round(C, 2)}')
 print(f'The price of the put option is: ${round(P, 2)}')
 ```
+
+From there, I knew that having these functionalities separate from the front end
+meant that I could refactor this code to instead be a function that is now called
+from the front end to determine option price via Black Scholes.
+```python
+import math
+from scipy.stats import norm
+
+def black_scholes_price(
+        S :float, # Underlying Price
+        K :float,  # Strike Price
+        T :float, # Time to Expiration (6 mths)
+        r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
+        vol :float, # volatility (σ), 
+        option_type:str # either call or put
+
+) -> dict:
+    if S <= 0 or K <= 0 or T <= 0 or vol <= 0:
+        raise ValueError("Invalid input: S, K, T and volatility must be positive")
+    # Calculate d1
+    d1 = (math.log(S/K) + (r + 0.5*(vol **2)) * T) / (vol * (math.sqrt(T))) 
+    # Calculate d2
+    d2 = d1 - (vol * (math.sqrt(T)))
+
+    if option_type.lower() == "call":
+        # Calculate Call Option Price
+        price = (S * norm.cdf(d1)) - (K * math.exp(-r*T) * norm.cdf(d2))
+    elif option_type.lower() == "put":
+        # Calculate Put Option Price
+        price = (K * math.exp(-r*T) * norm.cdf(-d2)) - (S * norm.cdf(-d1))
+    else:
+        raise ValueError("Option type must be 'call' or 'put'")
+
+    return {
+        "price": price,
+        "d1": d1,
+        "d2": d2
+    }
+```
+Along with error checking, this allows a separation of concerns between the frontend
+and backend. This will prove to be extremely useful in determining prices for
+multitudes of data streams.
+
+Following this, a "connection" needs to be made on the front end side to efficiently
+call this function to determine option pricing.
+
 
 

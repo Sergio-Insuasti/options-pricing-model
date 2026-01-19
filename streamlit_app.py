@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+from option_pricer.models.black_scholes import black_scholes_price
+
 # ===============================
 # Page Config
 # ===============================
@@ -180,8 +182,16 @@ with tab1:
     st.write("What do the models say right now?")
 
     col1, col2, col3 = st.columns(3)
+    bs_result = black_scholes_price(
+        S=spot,
+        K=strike,
+        T=maturity,
+        r=r,
+        vol=sigma,
+        option_type=option_type
+    )
 
-    col1.metric("Black Scholes Price", "—")
+    col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
     col2.metric("Binomial Price", "—")
     col3.metric("Monte Carlo Price", "—")
 
@@ -198,7 +208,7 @@ with tab2:
     st.write("Direct numerical comparison across pricing models.")
 
     comparison_df = pd.DataFrame({
-        "Model": ["Black–Scholes", "Binomial", "Monte Carlo"],
+        "Model": ["Black Scholes", "Binomial", "Monte Carlo"],
         "Price": ["—", "—", "—"],
         "Delta": ["—", "—", "—"],
         "Gamma": ["—", "—", "—"],
