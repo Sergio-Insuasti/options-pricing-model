@@ -2,14 +2,21 @@
 
 ## By Sergio Insuasti
 
-### About
+# About
 Designing a full-stack dashboard which explores the three most common
 theoretical option pricing models: Black Scholes, Monte Carlo and Binomial.
 
 
-### Directory
+# Directory
+```powershell
 option_pricer/
-├── option_pricer/          # pricing library (NO UI CODE)
+├── .devcontainer/
+│   │   ├── devcontainer.json
+├── .streamlit/
+│   ├── config.toml
+├── assets/
+│   │   ├── /
+├── option_pricer/    
 │   ├── models/
 │   │   ├── black_scholes.py
 │   │   ├── binomial.py
@@ -17,12 +24,14 @@ option_pricer/
 │   ├── greeks/
 │   ├── implied_vol/
 │   └── core/
-├── dashboard/
-│   └── streamlit_app.py              # Streamlit UI
+└── streamlit_app.py/
+└── requirements.txt/
 ├── tests/
 └── README.md
+```
 
-## Log 1: INTERACTIVE DASHBOARD (19-01-26)
+
+# Log 1: INTERACTIVE DASHBOARD (19-01-26)
 For this phase, my intention is to create an interactive dashboard through my knowledge
 of Python. With this dashboard users can configure option parameters,
 run the three most popular option pricing models and compare prices, Greeks,
@@ -33,10 +42,10 @@ of React. StreamLit is a frontend library that has native widgets such as slider
 and contains zero frontend overhead. Its simplicity is widely used by researchers
 and will highlight the intended simplicity of this software.
 
-## Log 2: MODEL IMPLEMENTATION (19/20-01-26)
+# Log 2: MODEL IMPLEMENTATION (19/20-01-26)
 As the front end has been established, focus is now on coding implementations
 of the three models that will be explored.
-### Black Scholes Model
+## Black Scholes Option Pricing Model
 First was the Black Scholes model: https://en.wikipedia.org/wiki/Black%E2%80%93Scholes_model </br>
 Initially, to understand the process of the model, I made sure to mathematically
 write formulae for calculating call/put option prices. With this initial version,
@@ -122,7 +131,7 @@ call this function to determine option pricing.
 - Risk-free rate and volatility are known and constant
 - The underlying price of an option (S) follows a log-normal distribution
 
-
+## Binomial Option Pricing Model
 
 
 

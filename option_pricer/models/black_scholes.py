@@ -1,6 +1,14 @@
 import math
 from scipy.stats import norm
 
+def checkNegativeValues(
+        S: float,
+        K: float,
+        T: float,
+        vol: float
+) -> bool:
+    return S <= 0 or K <= 0 or T <= 0 or vol <= 0
+
 def black_scholes_price(
         S :float, # Underlying Price
         K :float,  # Strike Price
@@ -10,7 +18,7 @@ def black_scholes_price(
         option_type:str # either call or put
 
 ) -> dict:
-    if S <= 0 or K <= 0 or T <= 0 or vol <= 0:
+    if checkNegativeValues(S, K, T, r):
         raise ValueError("Invalid input: S, K, T and volatility must be positive")
     # Calculate d1
     d1 = (math.log(S/K) + (r + 0.5*(vol **2)) * T) / (vol * (math.sqrt(T))) 

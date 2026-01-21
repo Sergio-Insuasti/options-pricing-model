@@ -1,32 +1,65 @@
 import numpy as np
 
-# BINOMIAL TREE REPRESENTATION
-S0 = 100 # initial stock price
-K = 100 # strike price
-T = 1 # time to maturity in years
-r = 0.06 # annual risk-free rate
-N = 3 # number of time steps
-u = 1.1 # up-factor in binomial models
-d = 1/u # ensure recombining tree
-opttype = 'C' # Option Type 'C' or 'P'
+def checkNegativeValues(
+        S: float,
+        K: float,
+        T: float,
+        vol: float
+) -> bool:
+    return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
+def binomial_price(
+    S :float, # Underlying Price
+    K :float,  # Strike Price
+    T :float, # Time to Expiration (6 mths)
+    r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
+    vol :float, # volatility (σ), 
+    steps: int,
+    option_type:str # either call or put
 
-# BINOMIAL TREE FAST
-def binomialTree(K, T, S0, r, N, u, d, opttype='C'):
-    # precompute constants
-    dt = T/N
-    q = (np.exp(r*dt) - d)/(u-d)
+) -> dict:
+    # BINOMIAL TREE REPRESENTATION
+    # Harcoded values for practice
+    # S0 = 100 # initial stock price
+    # K = 100 # strike price
+    # T = 1 # time to maturity in years
+    # r = 0.06 # annual risk-free rate
+    # N = 3 # number of time steps
+    # u = 1.1 # up-factor in binomial models
+    # d = 1/u # ensure recombining tree
+    # opttype = 'C' # Option Type 'C' or 'P'
+
+    if steps <= 0:
+        raise ValueError("Steps for Binomial Model must be positive")
+    if checkNegativeValues(S, K, T, vol):
+        raise ValueError("Invalid input parameters")
+    
+    dt = T / steps
+    u = np.exp(vol * np.sqrt(dt))
+    d = 1.0 / u
+
+    q = (np.exp(r * dt) - d) / (u - d)
     discount = np.exp(-r * dt)
 
-    # Initialise asset prices at maturity -> Time Step N
-    C = S0*d**(np.arange(N, -1, -1))*u**(np.arange(0, N+1,1))
+    stock_prices = S * (d ** np.arange(steps, -1,-1)) * (u ** np.arange(0, steps + 1))
 
-    # initialise option values at maturity
-    C = np.maximum( C - K, np.zeros(N+1) )
-
-    # step backwards through tree
-    for i in np.arange(N, 0, -1):
-        C = discount * ( q * C[1:i+1] + (1-q)* C[0:i])
+    if option_type.lower() == "call":
+        option_values = np.maximum(stock_prices - K, 0.0)
+    elif option_type.lower() == "put":
+        option_values = np.maximum(K - stock_prices, 0.0)
+    else:
+        raise ValueError("Option type must be 'call' or 'put'")
     
-    return C[0]
-print(binomialTree(K, T, S0, r, N, u, d, opttype='C'))
+    for _ in range(steps):
+        option_values = discount * (
+            q * option_values[1:] + (1 - q) * option_values[:-1]
+        )
+    return {
+        "price": option_values[0],
+        "meta": {
+            "steps": steps,
+            "u": u,
+            "d": d,
+            "q": q
+        }
+    }
