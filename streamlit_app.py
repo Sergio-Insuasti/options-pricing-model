@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 from option_pricer.models.black_scholes import black_scholes_price
+from option_pricer.models.binomial import binomial_price
 
 # ===============================
 # Page Config
@@ -141,7 +142,7 @@ with st.sidebar:
 
     st.divider()
 
-    with st.expander("Model Parameters"):
+    with st.expander("Unique Model Parameters"):
         binomial_steps = st.slider(
             "Binomial Steps",
             min_value=10,
@@ -192,8 +193,18 @@ with tab1:
         option_type=option_type
     )
 
+    bin_result = binomial_price(
+        S=spot,
+        K=strike,
+        T=maturity,
+        r=r,
+        vol=sigma,
+        steps=binomial_steps,
+        option_type=option_type
+    )
+
     col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
-    col2.metric("Binomial Price", "—")
+    col2.metric("Binomial Price", f"{bin_result['price']:.4f}")
     col3.metric("Monte Carlo Price", "—")
 
     st.caption(
