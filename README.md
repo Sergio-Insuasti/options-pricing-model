@@ -24,8 +24,8 @@ option_pricer/
 │   ├── greeks/
 │   ├── implied_vol/
 │   └── core/
-└── streamlit_app.py/
-└── requirements.txt/
+└── streamlit_app.py
+└── requirements.txt
 ├── tests/
 └── README.md
 ```
@@ -132,6 +132,75 @@ call this function to determine option pricing.
 - The underlying price of an option (S) follows a log-normal distribution
 
 ## Binomial Option Pricing Model
+The Binomial Model prices an option by approximating the continuous evolution of an asset price with a discrete-time recombining tree. It will split time into N discrete steps and with the asset at each time point either moving up or down by a factor of $u$ or $d$ respectively. To implement this, I used Python and Numpy as such:
+``` python
+import numpy as np
 
+def checkNegativeValues(
+        S: float,
+        K: float,
+        T: float,
+        vol: float
+) -> bool:
+    return S <= 0 or K <= 0 or T <= 0 or vol <= 0
+
+def binomial_price(
+    S :float, # Underlying Price
+    K :float,  # Strike Price
+    T :float, # Time to Expiration (6 mths)
+    r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
+    vol :float, # volatility (σ), 
+    steps: int,
+    option_type:str # either call or put
+
+) -> dict:
+    if steps <= 0:
+        raise ValueError("Steps for Binomial Model must be positive")
+    if checkNegativeValues(S, K, T, vol):
+        raise ValueError("Invalid input parameters")
+    
+    dt = T / steps
+    u = np.exp(vol * np.sqrt(dt))
+    d = 1.0 / u
+
+    q = (np.exp(r * dt) - d) / (u - d)
+    discount = np.exp(-r * dt)
+
+    # Here are stock prices at maturity
+    stock_prices = S * (d ** np.arange(steps, -1,-1)) * (u ** np.arange(0, steps + 1))
+
+    # Using the options type to find payoff at maturity
+    if option_type.lower() == "call":
+        option_values = np.maximum(stock_prices - K, 0.0)
+    elif option_type.lower() == "put":
+        option_values = np.maximum(K - stock_prices, 0.0)
+    else:
+        raise ValueError("Option type must be 'call' or 'put'")
+    
+    # Then by backwards induction, we then find the approximate option payoff
+    for _ in range(steps):
+        option_values = discount * (
+            q * option_values[1:] + (1 - q) * option_values[:-1]
+        )
+    return {
+        "price": option_values[0],
+        "meta": {
+            "steps": steps,
+            "u": u,
+            "d": d,
+            "q": q
+        }
+    }
+```
+
+Continuing with the implementation of the Black Scholes model, we are ensuring a separation of concerns and low coupling by calling on binomial.py instead of having that implementation in our frontend.
+Furthermore, this model has taught me how 
+
+### Assumptions
+- The underlying price follows a discrete-time multiplicative process
+- Markets are arbitrage-free
+- Risk-free rate and volatility are constant
+- Trading occurs at discrete time intervals
+- The option is European-style
 
 

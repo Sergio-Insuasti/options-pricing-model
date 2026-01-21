@@ -18,17 +18,6 @@ def binomial_price(
     option_type:str # either call or put
 
 ) -> dict:
-    # BINOMIAL TREE REPRESENTATION
-    # Harcoded values for practice
-    # S0 = 100 # initial stock price
-    # K = 100 # strike price
-    # T = 1 # time to maturity in years
-    # r = 0.06 # annual risk-free rate
-    # N = 3 # number of time steps
-    # u = 1.1 # up-factor in binomial models
-    # d = 1/u # ensure recombining tree
-    # opttype = 'C' # Option Type 'C' or 'P'
-
     if steps <= 0:
         raise ValueError("Steps for Binomial Model must be positive")
     if checkNegativeValues(S, K, T, vol):
