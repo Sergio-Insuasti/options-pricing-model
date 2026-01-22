@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 from app.state import initialise, defaults
+from app.layout import render_layout
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -10,25 +11,7 @@ from option_pricer.models.monte_carlo import monte_carlo_price
 
 initialise()
 
-# ===============================
-# Page Config
-# ===============================
-st.set_page_config(
-    page_title="Option Pricing Models Dashboard",
-    layout="wide"
-)
-st.markdown("""
-        <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        </style>
-        """, unsafe_allow_html=True
-    )
-
-st.title("Option Pricing Models Dashboard")
-LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
-st.subheader(f"By [Sergio Insuasti]({LI_url})")
+render_layout()
 
 # ===============================
 # Helper: Synced Slider + Number Input
