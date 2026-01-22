@@ -14,6 +14,7 @@ def compute_models():
         vol=state["vol"],
         option_type=state["option_type"]
     )
+    
     bin_ = binomial_price(
         S=state["spot"],
         K=state["strike"],
@@ -24,6 +25,7 @@ def compute_models():
         steps=state["binomial_steps"],
         option_type=state["option_type"]
     )
+    
     mc = monte_carlo_price(
         S=state["spot"],
         K=state["strike"],
