@@ -39,7 +39,7 @@ def render_layout():
     }
     </style>
     <div class="footer">
-        <p>Developed by <a href="https://www.linkedin.com/in/sergio-insuasti/" target="_blank">Sergio Insuasti</a>© 2026</p>
+        <p>Developed by <a href="https://www.linkedin.com/in/sergio-insuasti/" target="_blank">Sergio Insuasti</a> © 2026</p>
     </div>
     """
     st.markdown(footer_style, unsafe_allow_html=True)
