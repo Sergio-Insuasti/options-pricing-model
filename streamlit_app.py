@@ -3,7 +3,6 @@ import streamlit as st
 from app.state import initialise, defaults
 from app.layout import render_layout
 from app.sidebar import render_sidebar
-from app.model_directory import compute_models
 from app.tabs.overview import render_overview
 from app.tabs.comparison import render_comparison
 from app.tabs.convergence import render_convergence
