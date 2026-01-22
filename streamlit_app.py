@@ -5,6 +5,7 @@ import numpy as np
 from app.state import initialise, defaults
 from app.layout import render_layout
 from app.widgets import synced_slider_input
+from app.sidebar import render_sidebar
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -13,200 +14,7 @@ from option_pricer.models.monte_carlo import monte_carlo_price
 initialise()
 
 render_layout()
-
-
-# # ===============================
-# # Helper: Synced Slider + Number Input
-# # ===============================
-# def synced_slider_input(
-#     label,
-#     min_value,
-#     max_value,
-#     default,
-#     step_slider,
-#     step_input,
-#     key
-# ):
-#     if key not in st.session_state:
-#         st.session_state[key] = default
-
-#     def slider_changed():
-#         st.session_state[key] = st.session_state[f"{key}_slider"]
-
-#     def input_changed():
-#         st.session_state[key] = st.session_state[f"{key}_input"]
-
-#     col1, col2 = st.columns([3, 1])
-
-#     with col1:
-#         st.slider(
-#             label,
-#             min_value=min_value,
-#             max_value=max_value,
-#             value=st.session_state[key],
-#             step=step_slider,
-#             key=f"{key}_slider",
-#             on_change=slider_changed
-#         )
-
-#     with col2:
-#         st.number_input(
-#             "",
-#             min_value=min_value,
-#             max_value=max_value,
-#             value=st.session_state[key],
-#             step=step_input,
-#             key=f"{key}_input",
-#             on_change=input_changed
-#         )
-
-#     return st.session_state[key]
-
-
-# ===============================
-# Sidebar — Inputs
-# ===============================
-with st.sidebar:
-    st.header("Contract Parameters")
-
-    spot = synced_slider_input(
-        label="Spot Price (S)",
-        min_value=50.0,
-        max_value=150.0,
-        default=defaults["spot"],
-        step_slider=1.0,
-        step_input=0.01,
-        key="spot"
-    )
-
-    strike = synced_slider_input(
-        label="Strike Price (K)",
-        min_value=50.0,
-        max_value=150.0,
-        default=defaults["strike"],
-        step_slider=1.0,
-        step_input=0.01,
-        key="strike"
-    )
-
-    maturity = synced_slider_input(
-        label="Time to Maturity (Years)",
-        min_value=0.01,
-        max_value=5.0,
-        default=defaults["maturity"],
-        step_slider=0.05,
-        step_input=0.001,
-        key="maturity"
-    )
-
-    option_type = st.selectbox(
-        "Option Type",
-        ["Call", "Put"],
-        key="option_type"
-    )
-
-    def reset_contract_parameters():
-        cParams = ["spot", "strike", "maturity", "option_type"]
-        for p in cParams:
-            st.session_state[p] = defaults[p]
-
-    st.button(
-        "Reset Contract Parameters",
-        on_click=reset_contract_parameters
-    )
-
-    st.divider()
-
-    st.header("Market Parameters")
-
-    r = synced_slider_input(
-        label="Risk-free Rate (r)",
-        min_value=0.0,
-        max_value=0.10,
-        default=defaults["r"],
-        step_slider=0.001,
-        step_input=0.0001,
-        key="r"
-    )
-
-    q = synced_slider_input(
-        label="Dividend Yield (q)",
-        min_value=0.0,
-        max_value=0.10,
-        default=defaults["q"],
-        step_slider=0.001,
-        step_input=0.0001,
-        key="q"
-    )
-
-    vol = synced_slider_input(
-        label="Volatility (σ)",
-        min_value=0.05,
-        max_value=0.80,
-        default=defaults["vol"],
-        step_slider=0.01,
-        step_input=0.001,
-        key="vol"
-    )
-
-    def reset_market_parameters():
-        mParams = ["r", "q", "vol"]
-        for p in mParams:
-            st.session_state[p] = defaults[p]
-
-    st.button(
-        "Reset Market Parameters",
-        on_click=reset_market_parameters
-    )
-
-    st.divider()
-
-    st.header("Unique Model Parameters")
-    binomial_steps = st.slider(
-        "Binomial Steps",
-        min_value=10,
-        max_value=500,
-        value=defaults["binomial_steps"],
-        step=10,
-        key="binomial_steps"
-    )
-
-    mc_steps = st.slider(
-        "Monte Carlo Time Steps",
-        min_value=10,
-        max_value=365,
-        value=defaults["mc_steps"],
-        step=5,
-        key="mc_steps"
-    )
-
-    mc_paths = st.slider(
-        "Monte Carlo Paths",
-        min_value=1_000,
-        max_value=500_000,
-        value=defaults["mc_paths"],
-        step=1_000,
-        key="mc_paths"
-    )
-
-    seed = st.number_input(
-        "Random Seed",
-        value=defaults["seed"],
-        step=1,
-        key="seed"
-    )
-
-    def reset_unique_parameters():
-        uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
-        for p in uParams:
-            st.session_state[p] = defaults[p]
-
-    st.button(
-        "Reset Unique Parameters",
-        on_click=reset_unique_parameters
-    )
-
-        
+render_sidebar(defaults)
 
 # ===============================
 # Main Area — Tabs
@@ -222,43 +30,43 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ===============================
 # Tab 1 — Overview
 # ===============================
+state = st.session_state
 with tab1:
     st.header("Overview")
     st.write("What do the models say right now? Use the sidebar to set your parameters!")
-
     col1, col2, col3 = st.columns(3)
     bs_result = black_scholes_price(
-        S=spot,
-        K=strike,
-        T=maturity,
-        q=q,
-        r=r,
-        vol=vol,
-        option_type=option_type
+        S=state["spot"],
+        K=state["strike"],
+        T=state["maturity"],
+        q=state["q"],
+        r=state["r"],
+        vol=state["vol"],
+        option_type=state["option_type"]
     )
 
     bin_result = binomial_price(
-        S=spot,
-        K=strike,
-        T=maturity,
-        q=q,
-        r=r,
-        vol=vol,
-        steps=binomial_steps,
-        option_type=option_type
+        S=state["spot"],
+        K=state["strike"],
+        T=state["maturity"],
+        q=state["q"],
+        r=state["r"],
+        vol=state["vol"],
+        steps=state["binomial_steps"],
+        option_type=state["option_type"]
     )
 
     mc_result = monte_carlo_price(
-        S=spot,
-        K=strike,
-        T=maturity,
-        q=q,
-        r=r,
-        vol=vol,
-        option_type=option_type,
-        n_steps=mc_steps,
-        n_sims=mc_paths,
-        seed=seed,
+        S=state["spot"],
+        K=state["strike"],
+        T=state["maturity"],
+        q=state["q"],
+        r=state["r"],
+        vol=state["vol"],
+        option_type=state["option_type"],
+        n_steps=state["mc_steps"],
+        n_sims=state["mc_paths"],
+        seed=state["seed"],
         return_paths=True
     )
 
