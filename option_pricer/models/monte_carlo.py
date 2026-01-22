@@ -1,5 +1,5 @@
 import numpy as np
-from typing import Optional, Dict, Tuple
+from typing import Optional
 
 def monte_carlo_price(
     S: float,
@@ -13,7 +13,7 @@ def monte_carlo_price(
     n_sims: int = 50_000,
     seed: Optional[int] = None,
     return_paths: bool = False,
-) -> Dict:
+) -> dict:
     if n_steps <= 0:
         raise ValueError("Number of Monte Carlo Steps must be positive")
 
