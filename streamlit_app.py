@@ -2,9 +2,13 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+from app.state import initialise, defaults
+
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
 from option_pricer.models.monte_carlo import monte_carlo_price
+
+initialise()
 
 # ===============================
 # Page Config
@@ -25,20 +29,6 @@ st.markdown("""
 st.title("Option Pricing Models Dashboard")
 LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
 st.subheader(f"By [Sergio Insuasti]({LI_url})")
-
-defaults = {
-    "spot": 100.0,
-    "strike": 100.0,
-    "maturity": 1.0,
-    "r": 0.03,
-    "q": 0.00,
-    "vol": 0.20,
-    "binomial_steps": 100,
-    "mc_steps": 50,
-    "mc_paths": 50_000,
-    "seed": 42,
-    "option_type": "Call",
-}
 
 # ===============================
 # Helper: Synced Slider + Number Input
