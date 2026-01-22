@@ -1,11 +1,12 @@
 import streamlit as st
 from app.state import (
+    defaults,
     reset_contract_parameters,
     reset_market_parameters,
     reset_unique_parameters
 )
 from app.widgets import synced_slider_input
-def render_sidebar(defaults: dict):
+def render_sidebar():
     with st.sidebar:
         st.header("Contract Parameters")
 

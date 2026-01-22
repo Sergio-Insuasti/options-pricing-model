@@ -11,7 +11,7 @@ from app.tabs.diagnostics import render_diagnostics
 
 initialise()
 render_layout()
-render_sidebar(defaults)
+render_sidebar()
 
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Overview",
