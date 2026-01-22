@@ -11,7 +11,8 @@ from app.tabs.diagnostics import render_diagnostics
 def render_layout():
     st.set_page_config(
         page_title="Option Pricing Models Dashboard",
-        layout="wide"
+        layout="wide",
+        page_icon="https://fontawesome.com/icons/dollar-sign?s=solid"
     )
     st.markdown("""
         <style>
