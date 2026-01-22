@@ -131,7 +131,7 @@ with st.sidebar:
     )
 
     def reset_contract_parameters():
-        cParams = ["spot", "strike", "maturity"]
+        cParams = ["spot", "strike", "maturity", "option_type"]
         for p in cParams:
             st.session_state[p] = defaults[p]
 
