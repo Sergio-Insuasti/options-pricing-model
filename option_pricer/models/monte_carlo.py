@@ -1,5 +1,8 @@
 import numpy as np
+import time
 from typing import Optional
+
+from option_pricer.utils import setTime
 
 def monte_carlo_price(
     S: float,
@@ -14,6 +17,9 @@ def monte_carlo_price(
     seed: Optional[int] = None,
     return_paths: bool = False,
 ) -> dict:
+    
+    start = time.perf_counter()
+    
     if n_steps <= 0:
         raise ValueError("Number of Monte Carlo Steps must be positive")
 
@@ -61,8 +67,10 @@ def monte_carlo_price(
     # 95% confidence interval
     ci_low = price - 1.96 * standard_error
     ci_high = price + 1.96 * standard_error
-
-    return {
+    
+    end = time.perf_counter()
+    
+    mc = {
         "price": float(price),
         "standard_error": float(standard_error),
         "confidence_interval": (float(ci_low), float(ci_high)),
@@ -70,3 +78,7 @@ def monte_carlo_price(
         "n_simulations": n_sims,
         "paths": paths if return_paths else None,
     }
+    
+    setTime(start, end, mc)
+
+    return mc

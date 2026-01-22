@@ -1,5 +1,8 @@
 import math
+import time
 from scipy.stats import norm
+
+from option_pricer.utils import setTime
 
 def checkNegativeValues(
         S: float,
@@ -19,6 +22,7 @@ def black_scholes_price(
         option_type:str # either call or put
 
 ) -> dict:
+    start = time.perf_counter()
     if checkNegativeValues(S, K, T, r):
         raise ValueError("Invalid input: S, K, T and volatility must be positive")
     # Calculate d1
@@ -34,9 +38,11 @@ def black_scholes_price(
         price = (K * math.exp(-r*T) * norm.cdf(-d2)) - (S * norm.cdf(-d1))
     else:
         raise ValueError("Option type must be 'call' or 'put'")
-
-    return {
+    end = time.perf_counter()
+    bs = {
         "price": price,
         "d1": d1,
         "d2": d2
     }
+    setTime(start, end, bs)
+    return bs

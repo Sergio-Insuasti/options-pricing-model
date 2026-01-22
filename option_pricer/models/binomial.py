@@ -1,4 +1,7 @@
+import time
 import numpy as np
+
+from option_pricer.utils import setTime
 
 def checkNegativeValues(
         S: float,
@@ -19,6 +22,9 @@ def binomial_price(
     option_type:str # either call or put
 
 ) -> dict:
+    
+    start = time.perf_counter()
+    
     if steps <= 0:
         raise ValueError("Steps for Binomial Model must be positive")
     if checkNegativeValues(S, K, T, vol):
@@ -44,7 +50,9 @@ def binomial_price(
         option_values = discount * (
             q * option_values[1:] + (1 - q) * option_values[:-1]
         )
-    return {
+    end = time.perf_counter()
+        
+    bin_ = {
         "price": option_values[0],
         "meta": {
             "steps": steps,
@@ -53,3 +61,6 @@ def binomial_price(
             "q": q
         }
     }
+    setTime(start, end, bin_)
+        
+    return bin_
