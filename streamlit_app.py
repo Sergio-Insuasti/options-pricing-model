@@ -190,7 +190,7 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ===============================
 with tab1:
     st.header("Overview")
-    st.write("What do the models say right now?")
+    st.write("What do the models say right now? Use the sidebar to set your parameters!")
 
     col1, col2, col3 = st.columns(3)
     bs_result = black_scholes_price(
