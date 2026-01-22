@@ -1,10 +1,13 @@
 from app.state import getState
+import time
+from option_pricer.utils import setTime
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
 from option_pricer.models.monte_carlo import monte_carlo_price
 
 def compute_models():
     state = getState()
+    start = time.perf_counter()
     bs = black_scholes_price(
         S=state["spot"],
         K=state["strike"],
@@ -14,7 +17,9 @@ def compute_models():
         vol=state["vol"],
         option_type=state["option_type"]
     )
-
+    end = time.perf_counter()
+    setTime(start, end, bs)
+    start = time.perf_counter()
     bin_ = binomial_price(
         S=state["spot"],
         K=state["strike"],
@@ -25,7 +30,9 @@ def compute_models():
         steps=state["binomial_steps"],
         option_type=state["option_type"]
     )
-
+    end = time.perf_counter()
+    setTime(start, end, bin_)
+    start = time.perf_counter()
     mc = monte_carlo_price(
         S=state["spot"],
         K=state["strike"],
@@ -39,5 +46,7 @@ def compute_models():
         seed=state["seed"],
         return_paths=True
     )
-
+    end = time.perf_counter()
+    setTime(start, end, mc)
+    
     return bs, bin_, mc

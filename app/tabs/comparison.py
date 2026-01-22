@@ -25,13 +25,6 @@ def render_comparison():
     bin_price = bin_model["price"]
     mc_price = mc_model["price"]
 
-    # Differences vs Black–Scholes
-    bin_diff = bin_price - bs_price
-    mc_diff = mc_price - bs_price
-
-    pct_bin = (bin_diff / bs_price) * 100
-    pct_mc = (mc_diff / bs_price) * 100
-
     # Build comparison table
     comparison_df = pd.DataFrame({
         "Model": [
@@ -46,18 +39,23 @@ def render_comparison():
         ],
         "Diff vs BS": [
             "—",
-            f"{colour(round(bin_diff, 4))}",
-            f"{colour(round(mc_diff, 4))}"
+            f"{colour(round(bin_price - bs_price, 4))}",
+            f"{colour(round(mc_price - bs_price, 4))}"
         ],
         "% Diff vs BS": [
             "—",
-            f"{colour(round(pct_bin, 4))}",
-            f"{colour(round(pct_mc, 4))}"        
+            f"{colour(round((bin_price - bs_price / bs_price) * 100, 4))}",
+            f"{colour(round((mc_price - bs_price / bs_price) * 100, 4))}"        
         ],
         "Uncertainty": [
             "—",
             "—",
-            f"±{mc_model['standard_error']:.4f}"
+            f"±{round(mc_model['standard_error'], 4)}"
+        ],
+        "Runtime (ms)": [
+            f"{round(bs_model["runtime"], 2)}",
+            f"{round(bin_model["runtime"], 2)}",
+            f"{round(mc_model["runtime"], 2)}"
         ],
         "Notes": [
             "Closed-form solution",
