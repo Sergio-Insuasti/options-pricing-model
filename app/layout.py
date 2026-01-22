@@ -23,8 +23,26 @@ def render_layout():
         unsafe_allow_html=True
     )
     st.title("Option Pricing Models Dashboard")
-    LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
-    st.subheader(f"By [Sergio Insuasti]({LI_url})")
+    st.markdown("""#### An Interactive Dashboard of Three Popular Option Pricing Models""")
+    footer_style = """
+    <style>
+    .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #121212; /* Adjust background color as needed */
+        color: #FFFFFF; /* Adjust text color as needed */
+        text-align: center;
+        padding: 10px 0; /* Add some padding */
+        font-size: 14px;
+    }
+    </style>
+    <div class="footer">
+        <p>Developed by <a href="https://www.linkedin.com/in/sergio-insuasti/" target="_blank">Sergio Insuasti</a>© 2026</p>
+    </div>
+    """
+    st.markdown(footer_style, unsafe_allow_html=True)
     
 def render_tabs():
     tab1, tab2, tab3, tab4, tab5 = st.tabs([
