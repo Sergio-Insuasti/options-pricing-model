@@ -11,7 +11,7 @@ from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
 from option_pricer.models.monte_carlo import monte_carlo_price
 
-initialise()
+initialise(st.session_state)
 
 render_layout()
 render_sidebar(defaults)

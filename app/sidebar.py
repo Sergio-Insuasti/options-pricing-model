@@ -1,4 +1,9 @@
 import streamlit as st
+from app.state import (
+    reset_contract_parameters,
+    reset_market_parameters,
+    reset_unique_parameters
+)
 from app.widgets import synced_slider_input
 def render_sidebar(defaults: dict):
     with st.sidebar:
@@ -40,11 +45,6 @@ def render_sidebar(defaults: dict):
             key="option_type"
         )
 
-        def reset_contract_parameters():
-            cParams = ["spot", "strike", "maturity", "option_type"]
-            for p in cParams:
-                st.session_state[p] = defaults[p]
-
         st.button(
             "Reset Contract Parameters",
             on_click=reset_contract_parameters
@@ -83,11 +83,6 @@ def render_sidebar(defaults: dict):
             step_input=0.001,
             key="vol"
         )
-
-        def reset_market_parameters():
-            mParams = ["r", "q", "vol"]
-            for p in mParams:
-                st.session_state[p] = defaults[p]
 
         st.button(
             "Reset Market Parameters",
@@ -130,11 +125,6 @@ def render_sidebar(defaults: dict):
             step=1,
             key="seed"
         )
-
-        def reset_unique_parameters():
-            uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
-            for p in uParams:
-                st.session_state[p] = defaults[p]
 
         st.button(
             "Reset Unique Parameters",

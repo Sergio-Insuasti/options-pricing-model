@@ -14,8 +14,24 @@ defaults = {
     "option_type": "Call",
 }
 
-def initialise():
+
+def initialise(state):
     for key, value in defaults.items():
         if key not in st.session_state:
-            st.session_state[key] = value
+            state[key] = value
+
+def reset_contract_parameters(state):
+    cParams = ["spot", "strike", "maturity", "option_type"]
+    for p in cParams:
+        state[p] = defaults[p]
+
+def reset_market_parameters(state):
+    mParams = ["r", "q", "vol"]
+    for p in mParams:
+        state[p] = defaults[p]
+
+def reset_unique_parameters(state):
+    uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
+    for p in uParams:
+        state[p] = defaults[p]
 
