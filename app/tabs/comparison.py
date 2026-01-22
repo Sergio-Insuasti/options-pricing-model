@@ -25,7 +25,6 @@ def render_comparison():
     bin_price = bin_model["price"]
     mc_price = mc_model["price"]
 
-    # Build comparison table
     comparison_df = pd.DataFrame({
         "Model": [
             "Black Scholes",
