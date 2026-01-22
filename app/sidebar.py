@@ -1,16 +1,11 @@
 import streamlit as st
-from app.state import (
-    defaults,
-    reset_contract_parameters,
-    reset_market_parameters,
-    reset_unique_parameters
-)
-from app.widgets import synced_slider_input
+from app.state import defaults
+from app.widgets import synced_slider_input, reset_button
 def render_sidebar():
     with st.sidebar:
         st.header("Contract Parameters")
 
-        spot = synced_slider_input(
+        synced_slider_input(
             label="Spot Price (S)",
             min_value=50.0,
             max_value=150.0,
@@ -20,7 +15,7 @@ def render_sidebar():
             key="spot"
         )
 
-        strike = synced_slider_input(
+        synced_slider_input(
             label="Strike Price (K)",
             min_value=50.0,
             max_value=150.0,
@@ -30,7 +25,7 @@ def render_sidebar():
             key="strike"
         )
 
-        maturity = synced_slider_input(
+        synced_slider_input(
             label="Time to Maturity (Years)",
             min_value=0.01,
             max_value=5.0,
@@ -40,22 +35,19 @@ def render_sidebar():
             key="maturity"
         )
 
-        option_type = st.selectbox(
+        st.selectbox(
             "Option Type",
             ["Call", "Put"],
             key="option_type"
         )
 
-        st.button(
-            "Reset Contract Parameters",
-            on_click=reset_contract_parameters
-        )
+        reset_button("contract")
 
         st.divider()
 
         st.header("Market Parameters")
 
-        r = synced_slider_input(
+        synced_slider_input(
             label="Risk-free Rate (r)",
             min_value=0.0,
             max_value=0.10,
@@ -65,7 +57,7 @@ def render_sidebar():
             key="r"
         )
 
-        q = synced_slider_input(
+        synced_slider_input(
             label="Dividend Yield (q)",
             min_value=0.0,
             max_value=0.10,
@@ -75,7 +67,7 @@ def render_sidebar():
             key="q"
         )
 
-        vol = synced_slider_input(
+        synced_slider_input(
             label="Volatility (σ)",
             min_value=0.05,
             max_value=0.80,
@@ -85,15 +77,12 @@ def render_sidebar():
             key="vol"
         )
 
-        st.button(
-            "Reset Market Parameters",
-            on_click=reset_market_parameters
-        )
+        reset_button("market")
 
         st.divider()
 
         st.header("Unique Model Parameters")
-        binomial_steps = st.slider(
+        st.slider(
             "Binomial Steps",
             min_value=10,
             max_value=500,
@@ -102,7 +91,7 @@ def render_sidebar():
             key="binomial_steps"
         )
 
-        mc_steps = st.slider(
+        st.slider(
             "Monte Carlo Time Steps",
             min_value=10,
             max_value=365,
@@ -111,7 +100,7 @@ def render_sidebar():
             key="mc_steps"
         )
 
-        mc_paths = st.slider(
+        st.slider(
             "Monte Carlo Paths",
             min_value=1_000,
             max_value=500_000,
@@ -120,16 +109,13 @@ def render_sidebar():
             key="mc_paths"
         )
 
-        seed = st.number_input(
+        st.number_input(
             "Random Seed",
             value=defaults["seed"],
             step=1,
             key="seed"
         )
 
-        st.button(
-            "Reset Unique Parameters",
-            on_click=reset_unique_parameters
-        )
+        reset_button("unique")
 
         

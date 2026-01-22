@@ -14,14 +14,14 @@ def render_layout():
         layout="wide"
     )
     st.markdown("""
-            <style>
-            html {
-                scroll-behavior: smooth;
-            }
-            </style>
-            """, unsafe_allow_html=True
-        )
-
+        <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        </style>
+        """, 
+        unsafe_allow_html=True
+    )
     st.title("Option Pricing Models Dashboard")
     LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
     st.subheader(f"By [Sergio Insuasti]({LI_url})")
@@ -48,4 +48,4 @@ def render_tabs():
 
     with tab5:
         render_diagnostics()
-    
+        

@@ -14,7 +14,6 @@ defaults = {
     "option_type": "Call",
 }
 
-
 def initialise():
     for key, value in defaults.items():
         if key not in st.session_state:
@@ -37,4 +36,3 @@ def reset_unique_parameters():
     uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
     for p in uParams:
         getState()[p] = defaults[p]
-

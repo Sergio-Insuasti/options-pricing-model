@@ -284,3 +284,16 @@ Following on from previous models, we ensure that coupling is loose and dependen
 While the simulation itself is rather straightforward, care was taken to ensure reproducability, numerical stability and compatibility with the front end.
 Now with this complete, we now had a complete overview of all three models and their option price estimates given a determined set of parameters. With this major component complete, we can now shift our focus to the analytical components such as model comparison and convergence.
 
+# Log 4: REFACTORING (22-01-26)
+Having finished the first major component of the app (implementing the three pricing models and presenting them in the overview), it became super clear that keeping all the frontend logic in the one file (streamlit_app.py) would be increasingly unmanageable. While Streamlit makes it easier to see what could be done, the more this application grows, the more brittle it will become. 
+To address this, I took the time to refactor the app into a modular architecture with clearly defined responsibilities. This decision came from a variety of principles: Maintainability, Separation of Concerns and Extensibility. The overall goal is to now make streamlit_app.py an orchestrator. This communicates with the server to execute all the frontend (and eventually backend) without the server directly accessing this. From this, new files were introduced:
+- state.py
+  - Initialises the session state variables once and once only. Also encapsulates session state ensuring other files can only access the session state via `getState()`. 
+- layout.py
+  - This handles the global layout of the app. This handles the main display as well as calls for the creation for each of the five proposed tabs
+- sidebar.py
+  - Handles all the parameters in the sidebar, logic in updating/resetting parameter values
+- widgets.py
+  - Handles current logic involving synced slider (a feature that updates parameter value by moving the slider or typing value)
+Refactoring the system early now gives a leg up for extending the implementation to the other elements in this app, such as comparison and convergence.
+

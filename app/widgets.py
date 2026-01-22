@@ -1,4 +1,28 @@
 import streamlit as st
+from app.state import (
+    reset_contract_parameters,
+    reset_market_parameters,
+    reset_unique_parameters
+)
+def reset_button(type:str):
+    if type=="contract":
+        st.button(
+            "Reset Contract Parameters",
+            on_click=reset_contract_parameters
+        )
+    elif type=="market":
+        st.button(
+            "Reset Market Parameters",
+            on_click=reset_market_parameters
+        )
+    elif type=="unique":
+        st.button(
+            "Reset Unique Parameters",
+            on_click=reset_unique_parameters
+        )
+    else:
+        raise ValueError("There are only three types of parameters: Contract, Market or Unique")
+    
 def synced_slider_input(
     label,
     min_value,
