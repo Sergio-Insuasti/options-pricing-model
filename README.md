@@ -204,4 +204,83 @@ Furthermore, this model has taught me how
 - The option is European-style
 
 # Log 3: MONTE CARLO MODEL (22-01-26)
+Unlike Black Scholes and Binomial, the Monte Carlo model estimates option prices through large-scale simulation of possible future price paths. To esure this, flexibility was essential, due to the model being computationally more expensive than the others. To implement this flexibility, I used NumPy for vectorised computation (in a similar fashion to binomial) to ensure the solution remains efficient if considering a large number of paths.
+``` python
+import numpy as np
+from typing import Optional, Dict, Tuple
+
+def monte_carlo_price(
+    S: float,
+    K: float,
+    T: float,
+    r: float,
+    q: float,
+    vol: float,
+    option_type: str,
+    n_steps: int = 100,
+    n_sims: int = 50_000,
+    seed: Optional[int] = None,
+    return_paths: bool = False,
+) -> Dict:
+    if n_steps <= 0:
+        raise ValueError("Number of Monte Carlo Steps must be positive")
+
+    if seed is not None:
+        np.random.seed(seed)
+
+    # Time increment
+    dt = T / n_steps
+
+    # Drift and diffusion terms
+    drift = (r - q - 0.5 * vol ** 2) * dt
+    diffusion = vol * np.sqrt(dt)
+
+    # Generate random shocks
+    Z = np.random.normal(size=(n_steps, n_sims))
+
+    # Log-price paths
+    log_S0 = np.log(S)
+    log_paths = log_S0 + np.cumsum(drift + diffusion * Z, axis=0)
+
+    # Include initial price
+    log_paths = np.vstack([np.full(n_sims, log_S0), log_paths])
+
+    # Convert to price paths
+    paths = np.exp(log_paths)
+
+    # Terminal prices
+    ST = paths[-1]
+
+    # Payoff for European call
+    if option_type.lower() == "call":
+        payoff = np.maximum(ST - K, 0.0)
+    elif option_type.lower() == "put":
+        payoff = np.maximum(K - ST, 0.0)
+    else:
+        raise ValueError("Option type must be 'call' or 'put'")
+
+    # Discounted price
+    price = np.exp(-r * T) * payoff.mean()
+
+    # Standard error
+    std_dev = payoff.std(ddof=1)
+    standard_error = np.exp(-r * T) * std_dev / np.sqrt(n_sims)
+
+    # 95% confidence interval
+    ci_low = price - 1.96 * standard_error
+    ci_high = price + 1.96 * standard_error
+
+    return {
+        "price": float(price),
+        "standard_error": float(standard_error),
+        "confidence_interval": (float(ci_low), float(ci_high)),
+        "n_steps": n_steps,
+        "n_simulations": n_sims,
+        "paths": paths if return_paths else None,
+    }
+
+```
+Following on from previous models, we ensure that coupling is loose and dependencies are minimised by separating the friont and backend to only engage via functional calls. Parameters are passed into the frontend and functionality is executed in the backend, with each model contained in their own scripts.
+While the simulation itself is rather straightforward, care was taken to ensure reproducability, numerical stability and compatibility with the front end.
+Now with this complete, we now had a complete overview of all three models and their option price estimates given a determined set of parameters. With this major component complete, we can now shift our focus to the analytical components such as model comparison and convergence.
 
