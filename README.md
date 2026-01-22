@@ -203,4 +203,5 @@ Furthermore, this model has taught me how
 - Trading occurs at discrete time intervals
 - The option is European-style
 
+# Log 3: MONTE CARLO MODEL (22-01-26)
 

@@ -13,6 +13,7 @@ def black_scholes_price(
         S :float, # Underlying Price
         K :float,  # Strike Price
         T :float, # Time to Expiration (6 mths)
+        q: float, # Dividend Yield
         r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
         vol :float, # volatility (σ), 
         option_type:str # either call or put

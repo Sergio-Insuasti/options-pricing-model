@@ -4,6 +4,7 @@ import numpy as np
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
+from option_pricer.models.monte_carlo import monte_carlo_price
 
 # ===============================
 # Page Config
@@ -151,6 +152,14 @@ with st.sidebar:
             step=10
         )
 
+        mc_steps = st.slider(
+            "Monte Carlo Time Steps",
+            min_value=10,
+            max_value=365,
+            value=50,
+            step=5
+        )
+
         mc_paths = st.slider(
             "Monte Carlo Paths",
             min_value=1_000,
@@ -188,6 +197,7 @@ with tab1:
         S=spot,
         K=strike,
         T=maturity,
+        q=q,
         r=r,
         vol=sigma,
         option_type=option_type
@@ -197,15 +207,30 @@ with tab1:
         S=spot,
         K=strike,
         T=maturity,
+        q=q,
         r=r,
         vol=sigma,
         steps=binomial_steps,
         option_type=option_type
     )
 
+    mc_result = monte_carlo_price(
+        S=spot,
+        K=strike,
+        T=maturity,
+        q=q,
+        r=r,
+        vol=sigma,
+        option_type=option_type,
+        n_steps=mc_steps,
+        n_sims=mc_paths,
+        seed=seed,
+        return_paths=True
+    )
+
     col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
     col2.metric("Binomial Price", f"{bin_result['price']:.4f}")
-    col3.metric("Monte Carlo Price", "—")
+    col3.metric("Monte Carlo Price", f"{mc_result['price']:.4f}", f"± {mc_result['standard_error']:.4f}")
 
     st.caption(
         "All models use the same contract and market assumptions. "

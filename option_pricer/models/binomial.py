@@ -13,6 +13,7 @@ def binomial_price(
     K :float,  # Strike Price
     T :float, # Time to Expiration (6 mths)
     r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
+    q: float,
     vol :float, # volatility (σ), 
     steps: int,
     option_type:str # either call or put

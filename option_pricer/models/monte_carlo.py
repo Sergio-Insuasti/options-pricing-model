@@ -1,26 +1,21 @@
 import numpy as np
 from typing import Optional, Dict, Tuple
 
-def checkNegativeValues(
-        nSteps: float,
-        nSims: float,
-        vol: float,
-) -> bool:
-    return nSteps > 0 and nSims > 0 and vol >= 0
-
-def monte_carlo_call_price(
+def monte_carlo_price(
     S: float,
     K: float,
     T: float,
     r: float,
+    q: float,
     vol: float,
+    option_type: str,
     n_steps: int = 100,
     n_sims: int = 50_000,
     seed: Optional[int] = None,
     return_paths: bool = False,
 ) -> Dict:
-    if checkNegativeValues(n_steps, n_sims, vol):
-        raise ValueError("Number of Steps and Sims must be positive, volatility must be non-negative.")
+    if n_steps <= 0:
+        raise ValueError("Number of Monte Carlo Steps must be positive")
 
     if seed is not None:
         np.random.seed(seed)
@@ -29,7 +24,7 @@ def monte_carlo_call_price(
     dt = T / n_steps
 
     # Drift and diffusion terms
-    drift = (r - 0.5 * vol ** 2) * dt
+    drift = (r - q - 0.5 * vol ** 2) * dt
     diffusion = vol * np.sqrt(dt)
 
     # Generate random shocks
@@ -49,7 +44,12 @@ def monte_carlo_call_price(
     ST = paths[-1]
 
     # Payoff for European call
-    payoff = np.maximum(ST - K, 0.0)
+    if option_type.lower() == "call":
+        payoff = np.maximum(ST - K, 0.0)
+    elif option_type.lower() == "put":
+        payoff = np.maximum(K - ST, 0.0)
+    else:
+        raise ValueError("Option type must be 'call' or 'put'")
 
     # Discounted price
     price = np.exp(-r * T) * payoff.mean()
