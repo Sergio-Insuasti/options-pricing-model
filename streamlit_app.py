@@ -1,6 +1,4 @@
 import streamlit as st
-import pandas as pd
-import numpy as np
 
 from app.state import initialise, defaults
 from app.layout import render_layout
@@ -11,10 +9,6 @@ from app.tabs.comparison import render_comparison
 from app.tabs.convergence import render_convergence
 from app.tabs.sensitivity import render_sensitivity
 from app.tabs.diagnostics import render_diagnostics
-
-from option_pricer.models.black_scholes import black_scholes_price
-from option_pricer.models.binomial import binomial_price
-from option_pricer.models.monte_carlo import monte_carlo_price
 
 initialise()
 render_layout()
