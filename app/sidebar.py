@@ -1,5 +1,5 @@
 import streamlit as st
-from widgets import synced_slider_input
+from app.widgets import synced_slider_input
 def render_sidebar(defaults: dict):
     with st.sidebar:
         st.header("Contract Parameters")

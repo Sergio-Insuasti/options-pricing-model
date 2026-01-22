@@ -1,5 +1,4 @@
 import streamlit as st
-
 def synced_slider_input(
     label,
     min_value,
