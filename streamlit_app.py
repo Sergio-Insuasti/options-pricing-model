@@ -9,6 +9,8 @@ from app.model_directory import compute_models
 from app.tabs.overview import render_overview
 from app.tabs.comparison import render_comparison
 from app.tabs.convergence import render_convergence
+from app.tabs.sensitivity import render_sensitivity
+from app.tabs.diagnostics import render_diagnostics
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -18,9 +20,6 @@ initialise()
 render_layout()
 render_sidebar(defaults)
 
-# ===============================
-# Main Area — Tabs
-# ===============================
 tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Overview",
     "Model Comparison",
@@ -29,62 +28,18 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "MC Diagnostics"
 ])
 
-# ===============================
-# Tab 1 — Overview
-# ===============================
 with tab1:
     render_overview()
 
-# ===============================
-# Tab 2 — Model Comparison
-# ===============================
 with tab2:
     render_comparison()
 
-# ===============================
-# Tab 3 — Convergence
-# ===============================
 with tab3:
     render_convergence()
 
-# ===============================
-# Tab 4 — Sensitivity (Greeks)
-# ===============================
 with tab4:
-    st.header("Sensitivity (Greeks)")
-    st.write("Economic intuition via parameter sensitivity.")
+    render_sensitivity()
 
-    sensitivity_axis = st.selectbox(
-        "Sensitivity Variable",
-        ["Spot Price", "Volatility", "Time to Maturity"]
-    )
-
-    sensitivity_placeholder = pd.DataFrame({
-        "x": np.linspace(0, 1, 20),
-        "Price": np.zeros(20),
-        "Delta": np.zeros(20)
-    }).set_index("x")
-
-    st.line_chart(sensitivity_placeholder)
-
-# ===============================
-# Tab 5 — Monte Carlo Diagnostics
-# ===============================
 with tab5:
-    st.header("Monte Carlo Diagnostics")
-    st.write("Understanding uncertainty and simulation behaviour.")
-
-    st.subheader("Terminal Price Distribution")
-    st.bar_chart(
-        pd.DataFrame({
-            "Frequency": [0, 0, 0, 0, 0]
-        })
-    )
-
-    st.subheader("Confidence Interval Width vs Paths")
-    ci_placeholder = pd.DataFrame({
-        "Paths": np.arange(5_000, 55_000, 5_000),
-        "CI Width": np.zeros(10)
-    }).set_index("Paths")
-
-    st.line_chart(ci_placeholder)
+    render_diagnostics()
+    
