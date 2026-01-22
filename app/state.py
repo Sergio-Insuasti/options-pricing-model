@@ -15,23 +15,26 @@ defaults = {
 }
 
 
-def initialise(state):
+def initialise():
     for key, value in defaults.items():
         if key not in st.session_state:
-            state[key] = value
+            getState()[key] = value
 
-def reset_contract_parameters(state):
+def getState():
+    return st.session_state
+
+def reset_contract_parameters():
     cParams = ["spot", "strike", "maturity", "option_type"]
     for p in cParams:
-        state[p] = defaults[p]
+        getState()[p] = defaults[p]
 
-def reset_market_parameters(state):
+def reset_market_parameters():
     mParams = ["r", "q", "vol"]
     for p in mParams:
-        state[p] = defaults[p]
+        getState()[p] = defaults[p]
 
-def reset_unique_parameters(state):
+def reset_unique_parameters():
     uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
     for p in uParams:
-        state[p] = defaults[p]
+        getState()[p] = defaults[p]
 

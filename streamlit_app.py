@@ -5,14 +5,14 @@ import numpy as np
 from app.state import initialise, defaults
 from app.layout import render_layout
 from app.sidebar import render_sidebar
-from app.model_directory import bs_result, bin_result, mc_result
+from app.model_directory import compute_models
+from app.tabs.overview import render_overview
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
 from option_pricer.models.monte_carlo import monte_carlo_price
 
-initialise(st.session_state)
-
+initialise()
 render_layout()
 render_sidebar(defaults)
 
@@ -30,20 +30,22 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
 # ===============================
 # Tab 1 — Overview
 # ===============================
-state = st.session_state
 with tab1:
-    st.header("Overview")
-    st.write("What do the models say right now? Use the sidebar to set your parameters!")
-    col1, col2, col3 = st.columns(3)
+    # st.header("Overview")
+    # st.write("What do the models say right now? Use the sidebar to set your parameters!")
+    # col1, col2, col3 = st.columns(3)
+    
+    # bs_result, bin_result, mc_result = compute_models()
 
-    col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
-    col2.metric("Binomial Price", f"{bin_result['price']:.4f}")
-    col3.metric("Monte Carlo Price", f"{mc_result['price']:.4f}")
+    # col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
+    # col2.metric("Binomial Price", f"{bin_result['price']:.4f}")
+    # col3.metric("Monte Carlo Price", f"{mc_result['price']:.4f}")
 
-    st.caption(
-        "All models use the same contract and market assumptions. "
-        "Monte Carlo estimates will later include confidence intervals."
-    )
+    # st.caption(
+    #     "All models use the same contract and market assumptions. "
+    #     "Monte Carlo estimates will later include confidence intervals."
+    # )
+    render_overview()
 
 # ===============================
 # Tab 2 — Model Comparison
@@ -54,7 +56,7 @@ with tab2:
 
     comparison_df = pd.DataFrame({
         "Model": ["Black Scholes", "Binomial", "Monte Carlo"],
-        "Price": [f"{bs_result['price']:.4f}", f"{bin_result['price']:.4f}", f"{mc_result['price']:.4f}"],
+        "Price": ["—", "—", "—"],
         "Delta": ["—", "—", "—"],
         "Gamma": ["—", "—", "—"],
         "Vega": ["—", "—", "—"],
