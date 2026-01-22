@@ -4,6 +4,7 @@ import numpy as np
 
 from app.state import initialise, defaults
 from app.layout import render_layout
+from app.widgets import synced_slider_input
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -13,52 +14,53 @@ initialise()
 
 render_layout()
 
-# ===============================
-# Helper: Synced Slider + Number Input
-# ===============================
-def synced_slider_input(
-    label,
-    min_value,
-    max_value,
-    default,
-    step_slider,
-    step_input,
-    key
-):
-    if key not in st.session_state:
-        st.session_state[key] = default
 
-    def slider_changed():
-        st.session_state[key] = st.session_state[f"{key}_slider"]
+# # ===============================
+# # Helper: Synced Slider + Number Input
+# # ===============================
+# def synced_slider_input(
+#     label,
+#     min_value,
+#     max_value,
+#     default,
+#     step_slider,
+#     step_input,
+#     key
+# ):
+#     if key not in st.session_state:
+#         st.session_state[key] = default
 
-    def input_changed():
-        st.session_state[key] = st.session_state[f"{key}_input"]
+#     def slider_changed():
+#         st.session_state[key] = st.session_state[f"{key}_slider"]
 
-    col1, col2 = st.columns([3, 1])
+#     def input_changed():
+#         st.session_state[key] = st.session_state[f"{key}_input"]
 
-    with col1:
-        st.slider(
-            label,
-            min_value=min_value,
-            max_value=max_value,
-            value=st.session_state[key],
-            step=step_slider,
-            key=f"{key}_slider",
-            on_change=slider_changed
-        )
+#     col1, col2 = st.columns([3, 1])
 
-    with col2:
-        st.number_input(
-            "",
-            min_value=min_value,
-            max_value=max_value,
-            value=st.session_state[key],
-            step=step_input,
-            key=f"{key}_input",
-            on_change=input_changed
-        )
+#     with col1:
+#         st.slider(
+#             label,
+#             min_value=min_value,
+#             max_value=max_value,
+#             value=st.session_state[key],
+#             step=step_slider,
+#             key=f"{key}_slider",
+#             on_change=slider_changed
+#         )
 
-    return st.session_state[key]
+#     with col2:
+#         st.number_input(
+#             "",
+#             min_value=min_value,
+#             max_value=max_value,
+#             value=st.session_state[key],
+#             step=step_input,
+#             key=f"{key}_input",
+#             on_change=input_changed
+#         )
+
+#     return st.session_state[key]
 
 
 # ===============================
