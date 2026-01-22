@@ -18,6 +18,20 @@ st.title("Option Pricing Models Dashboard")
 LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
 st.subheader(f"By [Sergio Insuasti]({LI_url})")
 
+defaults = {
+    "spot": 100.0,
+    "strike": 100.0,
+    "maturity": 1.0,
+    "r": 0.03,
+    "q": 0.00,
+    "vol": 0.20,
+    "binomial_steps": 100,
+    "mc_steps": 50,
+    "mc_paths": 50_000,
+    "seed": 42,
+    "option_type": "Call",
+}
+
 # ===============================
 # Helper: Synced Slider + Number Input
 # ===============================
@@ -70,13 +84,21 @@ def synced_slider_input(
 # Sidebar — Inputs
 # ===============================
 with st.sidebar:
+    st.markdown("""
+        <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
     st.header("Contract Parameters")
 
     spot = synced_slider_input(
         label="Spot Price (S)",
         min_value=50.0,
         max_value=150.0,
-        default=100.0,
+        default=defaults["spot"],
         step_slider=1.0,
         step_input=0.01,
         key="spot"
@@ -86,7 +108,7 @@ with st.sidebar:
         label="Strike Price (K)",
         min_value=50.0,
         max_value=150.0,
-        default=100.0,
+        default=defaults["strike"],
         step_slider=1.0,
         step_input=0.01,
         key="strike"
@@ -96,7 +118,7 @@ with st.sidebar:
         label="Time to Maturity (Years)",
         min_value=0.01,
         max_value=5.0,
-        default=1.0,
+        default=defaults["maturity"],
         step_slider=0.05,
         step_input=0.001,
         key="maturity"
@@ -107,6 +129,16 @@ with st.sidebar:
         ["Call", "Put"]
     )
 
+    def reset_contract_parameters():
+        cParams = ["spot", "strike", "maturity"]
+        for p in cParams:
+            st.session_state[p] = defaults[p]
+
+    st.button(
+        "Reset Contract Parameters",
+        on_click=reset_contract_parameters
+    )
+
     st.divider()
 
     st.header("Market Parameters")
@@ -115,7 +147,7 @@ with st.sidebar:
         label="Risk-free Rate (r)",
         min_value=0.0,
         max_value=0.10,
-        default=0.03,
+        default=defaults["r"],
         step_slider=0.001,
         step_input=0.0001,
         key="r"
@@ -125,54 +157,76 @@ with st.sidebar:
         label="Dividend Yield (q)",
         min_value=0.0,
         max_value=0.10,
-        default=0.00,
+        default=defaults["q"],
         step_slider=0.001,
         step_input=0.0001,
         key="q"
     )
 
-    sigma = synced_slider_input(
+    vol = synced_slider_input(
         label="Volatility (σ)",
         min_value=0.05,
         max_value=0.80,
-        default=0.20,
+        default=defaults["vol"],
         step_slider=0.01,
         step_input=0.001,
-        key="sigma"
+        key="vol"
+    )
+
+    def reset_market_parameters():
+        mParams = ["r", "q", "vol"]
+        for p in mParams:
+            st.session_state[p] = defaults[p]
+
+    st.button(
+        "Reset Market Parameters",
+        on_click=reset_market_parameters
     )
 
     st.divider()
 
-    with st.expander("Unique Model Parameters"):
-        binomial_steps = st.slider(
-            "Binomial Steps",
-            min_value=10,
-            max_value=500,
-            value=100,
-            step=10
-        )
+    st.header("Unique Model Parameters")
+    binomial_steps = st.slider(
+        "Binomial Steps",
+        min_value=10,
+        max_value=500,
+        value=defaults["binomial_steps"],
+        step=10
+    )
 
-        mc_steps = st.slider(
-            "Monte Carlo Time Steps",
-            min_value=10,
-            max_value=365,
-            value=50,
-            step=5
-        )
+    mc_steps = st.slider(
+        "Monte Carlo Time Steps",
+        min_value=10,
+        max_value=365,
+        value=defaults["mc_steps"],
+        step=5
+    )
 
-        mc_paths = st.slider(
-            "Monte Carlo Paths",
-            min_value=1_000,
-            max_value=500_000,
-            value=50_000,
-            step=1_000
-        )
+    mc_paths = st.slider(
+        "Monte Carlo Paths",
+        min_value=1_000,
+        max_value=500_000,
+        value=defaults["mc_paths"],
+        step=1_000
+    )
 
-        seed = st.number_input(
-            "Random Seed",
-            value=42,
-            step=1
-        )
+    seed = st.number_input(
+        "Random Seed",
+        value=defaults["seed"],
+        step=1
+    )
+
+    def reset_unique_parameters():
+        uParams = ["binomial_steps", "mc_steps", "mc_paths", "seed",]
+        for p in uParams:
+            st.session_state[p] = defaults[p]
+
+    st.button(
+        "Reset Unique Parameters",
+        on_click=reset_unique_parameters
+    )
+
+        
 
 # ===============================
 # Main Area — Tabs
@@ -199,7 +253,7 @@ with tab1:
         T=maturity,
         q=q,
         r=r,
-        vol=sigma,
+        vol=vol,
         option_type=option_type
     )
 
@@ -209,7 +263,7 @@ with tab1:
         T=maturity,
         q=q,
         r=r,
-        vol=sigma,
+        vol=vol,
         steps=binomial_steps,
         option_type=option_type
     )
@@ -220,7 +274,7 @@ with tab1:
         T=maturity,
         q=q,
         r=r,
-        vol=sigma,
+        vol=vol,
         option_type=option_type,
         n_steps=mc_steps,
         n_sims=mc_paths,
