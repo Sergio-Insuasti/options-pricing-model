@@ -4,8 +4,8 @@ import numpy as np
 
 from app.state import initialise, defaults
 from app.layout import render_layout
-from app.widgets import synced_slider_input
 from app.sidebar import render_sidebar
+from app.model_directory import bs_result, bin_result, mc_result
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -35,44 +35,10 @@ with tab1:
     st.header("Overview")
     st.write("What do the models say right now? Use the sidebar to set your parameters!")
     col1, col2, col3 = st.columns(3)
-    bs_result = black_scholes_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        option_type=state["option_type"]
-    )
-
-    bin_result = binomial_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        steps=state["binomial_steps"],
-        option_type=state["option_type"]
-    )
-
-    mc_result = monte_carlo_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        option_type=state["option_type"],
-        n_steps=state["mc_steps"],
-        n_sims=state["mc_paths"],
-        seed=state["seed"],
-        return_paths=True
-    )
 
     col1.metric("Black Scholes Price", f"{bs_result['price']:.4f}")
     col2.metric("Binomial Price", f"{bin_result['price']:.4f}")
-    col3.metric("Monte Carlo Price", f"{mc_result['price']:.4f}", f"± {mc_result['standard_error']:.4f}")
+    col3.metric("Monte Carlo Price", f"{mc_result['price']:.4f}")
 
     st.caption(
         "All models use the same contract and market assumptions. "
@@ -88,7 +54,7 @@ with tab2:
 
     comparison_df = pd.DataFrame({
         "Model": ["Black Scholes", "Binomial", "Monte Carlo"],
-        "Price": ["—", "—", "—"],
+        "Price": [f"{bs_result['price']:.4f}", f"{bin_result['price']:.4f}", f"{mc_result['price']:.4f}"],
         "Delta": ["—", "—", "—"],
         "Gamma": ["—", "—", "—"],
         "Vega": ["—", "—", "—"],
