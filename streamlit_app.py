@@ -13,6 +13,14 @@ st.set_page_config(
     page_title="Option Pricing Models Dashboard",
     layout="wide"
 )
+st.markdown("""
+        <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        </style>
+        """, unsafe_allow_html=True
+    )
 
 st.title("Option Pricing Models Dashboard")
 LI_url = "https://www.linkedin.com/in/sergio-insuasti/"
@@ -84,14 +92,6 @@ def synced_slider_input(
 # Sidebar — Inputs
 # ===============================
 with st.sidebar:
-    st.markdown("""
-        <style>
-        html {
-            scroll-behavior: smooth;
-        }
-        </style>
-        """, unsafe_allow_html=True
-    )
     st.header("Contract Parameters")
 
     spot = synced_slider_input(
@@ -126,7 +126,8 @@ with st.sidebar:
 
     option_type = st.selectbox(
         "Option Type",
-        ["Call", "Put"]
+        ["Call", "Put"],
+        key="option_type"
     )
 
     def reset_contract_parameters():
@@ -191,7 +192,8 @@ with st.sidebar:
         min_value=10,
         max_value=500,
         value=defaults["binomial_steps"],
-        step=10
+        step=10,
+        key="binomial_steps"
     )
 
     mc_steps = st.slider(
@@ -199,7 +201,8 @@ with st.sidebar:
         min_value=10,
         max_value=365,
         value=defaults["mc_steps"],
-        step=5
+        step=5,
+        key="mc_steps"
     )
 
     mc_paths = st.slider(
@@ -207,13 +210,15 @@ with st.sidebar:
         min_value=1_000,
         max_value=500_000,
         value=defaults["mc_paths"],
-        step=1_000
+        step=1_000,
+        key="mc_paths"
     )
 
     seed = st.number_input(
         "Random Seed",
         value=defaults["seed"],
-        step=1
+        step=1,
+        key="seed"
     )
 
     def reset_unique_parameters():
