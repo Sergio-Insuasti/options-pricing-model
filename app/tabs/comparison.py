@@ -43,8 +43,8 @@ def render_comparison():
         ],
         "% Diff vs BS": [
             "—",
-            f"{colour(round((bin_price - bs_price / bs_price) * 100, 4))}",
-            f"{colour(round((mc_price - bs_price / bs_price) * 100, 4))}"        
+            f"{colour(round(((bin_price - bs_price) / bs_price) * 100, 4))}",
+            f"{colour(round(((mc_price - bs_price) / bs_price) * 100, 4))}"        
         ],
         "Uncertainty": [
             "—",
