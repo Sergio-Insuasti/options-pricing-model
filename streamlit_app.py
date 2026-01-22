@@ -8,6 +8,7 @@ from app.sidebar import render_sidebar
 from app.model_directory import compute_models
 from app.tabs.overview import render_overview
 from app.tabs.comparison import render_comparison
+from app.tabs.convergence import render_convergence
 
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
@@ -44,24 +45,7 @@ with tab2:
 # Tab 3 — Convergence
 # ===============================
 with tab3:
-    st.header("Convergence")
-    st.write("Why do the models differ numerically?")
-
-    st.subheader("Binomial Convergence")
-    binomial_placeholder = pd.DataFrame({
-        "Steps": np.arange(10, 110, 10),
-        "Price": np.zeros(10)
-    }).set_index("Steps")
-
-    st.line_chart(binomial_placeholder)
-
-    st.subheader("Monte Carlo Convergence")
-    mc_placeholder = pd.DataFrame({
-        "Paths": np.arange(5_000, 55_000, 5_000),
-        "Price": np.zeros(10)
-    }).set_index("Paths")
-
-    st.line_chart(mc_placeholder)
+    render_convergence()
 
 # ===============================
 # Tab 4 — Sensitivity (Greeks)
