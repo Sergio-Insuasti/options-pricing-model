@@ -53,12 +53,5 @@ def get_black_scholes_price(
     return bs
 
 def black_scholes_price(pricing: PricingState):
-    return get_black_scholes_price(
-        pricing.S,
-        pricing.K,
-        pricing.T,
-        pricing.q,
-        pricing.r,
-        pricing.vol,
-        pricing.option_type
-    )
+    inputs = pricing.resolved_inputs()
+    return get_black_scholes_price(**inputs)
