@@ -46,7 +46,7 @@ def render_comparison():
             f"{colour(round(((bin_price - bs_price) / bs_price) * 100, 4))}",
             f"{colour(round(((mc_price - bs_price) / bs_price) * 100, 4))}"        
         ],
-        "Uncertainty": [
+        "Standard Error": [
             "—",
             "—",
             f"±{round(mc_model['standard_error'], 4)}"
