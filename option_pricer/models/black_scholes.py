@@ -42,7 +42,8 @@ def black_scholes_price(
     bs = {
         "price": price,
         "d1": d1,
-        "d2": d2
+        "d2": d2,
+        "runtime": 0
     }
     setTime(start, end, bs)
     return bs

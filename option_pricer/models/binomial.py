@@ -58,7 +58,8 @@ def binomial_price(
             "steps": steps,
             "u": u,
             "d": d,
-            "q": q
+            "q": q,
+            "runtime": 0
         }
     }
     setTime(start, end, bin_)

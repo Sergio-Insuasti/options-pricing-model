@@ -77,6 +77,7 @@ def monte_carlo_price(
         "n_steps": n_steps,
         "n_simulations": n_sims,
         "paths": paths if return_paths else None,
+        "runtime": 0
     }
     
     setTime(start, end, mc)
