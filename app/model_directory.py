@@ -9,7 +9,6 @@ def compute_models():
     pricing = PricingState.from_dict(state)
     bs = black_scholes_price(pricing)
     
-    
     bin_ = binomial_price(
         pricing,
         steps=state["binomial_steps"]
