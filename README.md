@@ -316,3 +316,5 @@ From a design perspective, the Comparison tab was intentionally kept thin. It co
 Black–Scholes is treated as the reference point due to its closed-form solution under idealised assumptions. Differences observed in the Binomial and Monte Carlo estimates are therefore interpreted as approximation error, rather than disagreement in theoretical valuation.
 To preserve strict separation of concerns, all recalculation and performance measurement logic was removed from the frontend tabs and relocated to the backend. Timing capture, numerical differences, and colour-coded deltas are computed outside the UI layer and exposed only as data. This prevents the frontend from becoming coupled to implementation details and ensures that performance statistics are gathered consistently across models.
 By centralising model execution, timing, and output formatting in the backend, the system provides a fast, reliable, and uniform interface for both current and future pricing models. The Comparison tab therefore functions purely as a presentation and interpretation layer, reinforcing the modular design of the overall application.
+
+# Log 6: FURTHER ANALYSIS (24-01-26)
