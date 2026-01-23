@@ -66,4 +66,14 @@ def render_tabs():
 
     with tab5:
         render_diagnostics()
+
+def render_disclaimer():
+    st.caption("""DISCLAIMER:""")
+    st.caption("""
+                This application prices European options under user-assumed market parameters.
+                All prices are computed using flat rates and assumed volatility levels.
+                Market data is treated as a snapshot and does not represent live tradable prices.
+                This project is intended for educational and training purposes only.
+                No financial decisions should be made based on this application.
+            """)
         
