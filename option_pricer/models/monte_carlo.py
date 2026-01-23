@@ -92,16 +92,11 @@ def monte_carlo_price(
     seed: Optional[int],
     return_paths: bool
 ):
+    inputs = pricing.resolved_inputs()
     return monte_carlo_formula(
-        pricing.S,
-        pricing.K,
-        pricing.T,
-        pricing.r,
-        pricing.q,
-        pricing.vol,
-        pricing.option_type,
-        n_steps,
-        n_sims,
-        seed,
-        return_paths
+        n_steps = n_steps,
+        n_sims = n_sims,
+        seed = seed,
+        return_paths = return_paths,
+        **inputs
     )
