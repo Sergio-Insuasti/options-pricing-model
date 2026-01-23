@@ -52,9 +52,9 @@ def render_comparison():
             f"±{round(mc_model['standard_error'], 4)}"
         ],
         "Runtime (ms)": [
-            f"{round(bs_model["runtime"], 2)}",
-            f"{round(bin_model["runtime"], 2)}",
-            f"{round(mc_model["runtime"], 2)}"
+            f"{round(bs_model['runtime'], 2)}",
+            f"{round(bin_model['runtime'], 2)}",
+            f"{round(mc_model['runtime'], 2)}"
         ],
         "Notes": [
             "Closed-form solution",
