@@ -3,8 +3,9 @@ import time
 from typing import Optional
 
 from option_pricer.utils import setTime
+from option_pricer.core.pricing_state import PricingState
 
-def monte_carlo_price(
+def get_monte_carlo_price(
     S: float,
     K: float,
     T: float,
@@ -83,3 +84,24 @@ def monte_carlo_price(
     setTime(start, end, mc)
 
     return mc
+
+def monte_carlo_price(
+    pricing: PricingState,
+    n_steps: int,
+    n_sims: int,
+    seed: Optional[int],
+    return_paths: bool
+):
+    return get_monte_carlo_price(
+        pricing.S,
+        pricing.K,
+        pricing.T,
+        pricing.r,
+        pricing.q,
+        pricing.vol,
+        pricing.option_type,
+        n_steps,
+        n_sims,
+        seed,
+        return_paths
+    )

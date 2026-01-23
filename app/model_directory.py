@@ -2,38 +2,21 @@ from app.state import getState
 from option_pricer.models.black_scholes import black_scholes_price
 from option_pricer.models.binomial import binomial_price
 from option_pricer.models.monte_carlo import monte_carlo_price
+from option_pricer.core.pricing_state import PricingState
 
 def compute_models():
     state = getState()
-    bs = black_scholes_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        option_type=state["option_type"]
-    )
+    pricing = PricingState.from_dict(state)
+    bs = black_scholes_price(pricing)
+    
     
     bin_ = binomial_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        steps=state["binomial_steps"],
-        option_type=state["option_type"]
+        pricing,
+        steps=state["binomial_steps"]
     )
     
     mc = monte_carlo_price(
-        S=state["spot"],
-        K=state["strike"],
-        T=state["maturity"],
-        q=state["q"],
-        r=state["r"],
-        vol=state["vol"],
-        option_type=state["option_type"],
+        pricing,
         n_steps=state["mc_steps"],
         n_sims=state["mc_paths"],
         seed=state["seed"],

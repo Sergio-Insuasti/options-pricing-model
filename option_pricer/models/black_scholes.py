@@ -1,7 +1,7 @@
 import math
 import time
 from scipy.stats import norm
-
+from option_pricer.core.pricing_state import PricingState
 from option_pricer.utils import setTime
 
 def checkNegativeValues(
@@ -12,7 +12,7 @@ def checkNegativeValues(
 ) -> bool:
     return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
-def black_scholes_price(
+def get_black_scholes_price(
         S :float, # Underlying Price
         K :float,  # Strike Price
         T :float, # Time to Expiration (6 mths)
@@ -47,3 +47,14 @@ def black_scholes_price(
     }
     setTime(start, end, bs)
     return bs
+
+def black_scholes_price(pricing: PricingState):
+    return get_black_scholes_price(
+        pricing.S,
+        pricing.K,
+        pricing.T,
+        pricing.q,
+        pricing.r,
+        pricing.vol,
+        pricing.option_type
+    )

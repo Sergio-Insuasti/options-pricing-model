@@ -1,6 +1,6 @@
 import time
 import numpy as np
-
+from option_pricer.core.pricing_state import PricingState
 from option_pricer.utils import setTime
 
 def checkNegativeValues(
@@ -11,15 +11,15 @@ def checkNegativeValues(
 ) -> bool:
     return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
-def binomial_price(
+def get_binomial_price(
     S :float, # Underlying Price
     K :float,  # Strike Price
     T :float, # Time to Expiration (6 mths)
     r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
     q: float,
     vol :float, # volatility (σ), 
-    steps: int,
-    option_type:str # either call or put
+    option_type:str, # either call or put
+    steps: int
 
 ) -> dict:
     
@@ -65,3 +65,18 @@ def binomial_price(
     setTime(start, end, bin_)
         
     return bin_
+
+def binomial_price(
+    pricing: PricingState,
+    steps: int
+):
+    return get_binomial_price(
+        pricing.S,
+        pricing.K,
+        pricing.T,
+        pricing.r,
+        pricing.q,
+        pricing.vol,
+        pricing.option_type,
+        steps
+    )
