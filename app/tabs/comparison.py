@@ -1,17 +1,7 @@
 import streamlit as st
 import pandas as pd
 from app.model_directory import compute_models
-
-
-def colour(val):
-    # Returns a coloured string using HTML.
-    if val > 0:
-        return f"<span style='color: green;'>{val}</span>"
-    elif val < 0:
-        return f"<span style='color: red;'>{val}</span>"
-    else:
-        return f"{val:.4f}"
-
+from option_pricer.utils import colour, diff, pct_diff
 
 def render_comparison():
     st.header("Model Comparison")
@@ -38,13 +28,13 @@ def render_comparison():
         ],
         "Diff vs BS": [
             "—",
-            f"{colour(round(bin_price - bs_price, 4))}",
-            f"{colour(round(mc_price - bs_price, 4))}"
+            f"{colour(round(diff(bin_price, bs_price), 4))}",
+            f"{colour(round(diff(mc_price, bs_price), 4))}"
         ],
         "% Diff vs BS": [
             "—",
-            f"{colour(round(((bin_price - bs_price) / bs_price) * 100, 4))}",
-            f"{colour(round(((mc_price - bs_price) / bs_price) * 100, 4))}"        
+            f"{colour(round(pct_diff(bin_price, bs_price), 4))}",
+            f"{colour(round(pct_diff(mc_price, bs_price), 4))}"        
         ],
         "Standard Error": [
             "—",
