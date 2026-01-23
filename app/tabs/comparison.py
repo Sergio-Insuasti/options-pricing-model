@@ -10,11 +10,6 @@ def render_comparison():
     # Run pricing models
     bs_model, bin_model, mc_model = compute_models()
 
-    # Extract prices
-    bs_price = bs_model['price']
-    bin_price = bin_model['price']
-    mc_price = mc_model['price']
-
     comparison_df = pd.DataFrame({
         "Model": [
             "Black Scholes",
@@ -22,19 +17,19 @@ def render_comparison():
             "Monte Carlo"
         ],
         "Price": [
-            f"{bs_price:.4f}",
-            f"{bin_price:.4f}",
-            f"{mc_price:.4f}"
+            f"{bs_model['price']:.4f}",
+            f"{bin_model['price']:.4f}",
+            f"{mc_model['price']:.4f}"
         ],
         "Diff vs BS": [
             "—",
-            f"{colour(round(diff(bin_price, bs_price), 4))}",
-            f"{colour(round(diff(mc_price, bs_price), 4))}"
+            f"{colour(diff(bin_model['price'], bs_model['price']), 4)}",
+            f"{colour(diff(mc_model['price'], bs_model['price']), 4)}"
         ],
         "% Diff vs BS": [
             "—",
-            f"{colour(round(pct_diff(bin_price, bs_price), 4))}",
-            f"{colour(round(pct_diff(mc_price, bs_price), 4))}"        
+            f"{colour(pct_diff(bin_model['price'], bs_model['price']), 4)}",
+            f"{colour(pct_diff(mc_model['price'], bs_model['price']), 4)}"        
         ],
         "Standard Error": [
             "—",

@@ -14,7 +14,7 @@ def colour(x:float) -> str:
         return f"{x:.4f}"
     
 def diff(a: float, b: float) -> float:
-    return a - b
+    return round(a - b, 4)
 
 def pct_diff(a: float, b: float) -> float:
-    return (a-b)/b
+    return round(((a-b)/b), 4)
