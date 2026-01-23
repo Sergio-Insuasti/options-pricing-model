@@ -16,7 +16,7 @@ def binomial_formula(
     K :float,  # Strike Price
     T :float, # Time to Expiration (6 mths)
     r :float, # Risk-Free Rate (yield of US 10 year treasury bond)
-    q: float,
+    q: float, 
     vol :float, # volatility (σ), 
     option_type:str, # either call or put
     steps: int
@@ -34,7 +34,7 @@ def binomial_formula(
     u = np.exp(vol * np.sqrt(dt))
     d = 1.0 / u
 
-    q = (np.exp(r * dt) - d) / (u - d)
+    p = (np.exp(r * dt) - d) / (u - d)
     discount = np.exp(-r * dt)
 
     stock_prices = S * (d ** np.arange(steps, -1,-1)) * (u ** np.arange(0, steps + 1))
@@ -48,7 +48,7 @@ def binomial_formula(
     
     for _ in range(steps):
         option_values = discount * (
-            q * option_values[1:] + (1 - q) * option_values[:-1]
+            p * option_values[1:] + (1 - p) * option_values[:-1]
         )
     end = time.perf_counter()
         
@@ -58,9 +58,9 @@ def binomial_formula(
             "steps": steps,
             "u": u,
             "d": d,
-            "q": q,
-            "runtime": 0
-        }
+            "p": p,
+        },
+        "runtime": 0
     }
     setTime(start, end, bin_)
         
@@ -70,13 +70,5 @@ def binomial_price(
     pricing: PricingState,
     steps: int
 ):
-    return binomial_formula(
-        pricing.S,
-        pricing.K,
-        pricing.T,
-        pricing.r,
-        pricing.q,
-        pricing.vol,
-        pricing.option_type,
-        steps
-    )
+    inputs = pricing.resolved_inputs()
+    return binomial_formula(steps=steps, **inputs)
