@@ -23,13 +23,13 @@ def render_comparison():
         ],
         "Diff vs BS": [
             "—",
-            f"{colour(diff(bin_model['price'], bs_model['price']), 4)}",
-            f"{colour(diff(mc_model['price'], bs_model['price']), 4)}"
+            f"{colour(diff(bin_model['price'], bs_model['price']))}",
+            f"{colour(diff(mc_model['price'], bs_model['price']))}"
         ],
         "% Diff vs BS": [
             "—",
-            f"{colour(pct_diff(bin_model['price'], bs_model['price']), 4)}",
-            f"{colour(pct_diff(mc_model['price'], bs_model['price']), 4)}"        
+            f"{colour(pct_diff(bin_model['price'], bs_model['price']))}",
+            f"{colour(pct_diff(mc_model['price'], bs_model['price']))}"        
         ],
         "Standard Error": [
             "—",
