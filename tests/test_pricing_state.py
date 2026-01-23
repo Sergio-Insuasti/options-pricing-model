@@ -1,10 +1,6 @@
 import pytest
 from option_pricer.core.pricing_state import PricingState
 
-# ============================================================
-# Fixtures
-# ============================================================
-
 @pytest.fixture
 def base_pricing_state():
     """
@@ -21,10 +17,6 @@ def base_pricing_state():
     )
 
 
-# ============================================================
-# PricingState: baseline behaviour
-# ============================================================
-
 def test_resolved_inputs_no_scenario(base_pricing_state):
     """
     With no scenario shocks, resolved inputs should equal base inputs.
@@ -40,10 +32,6 @@ def test_resolved_inputs_no_scenario(base_pricing_state):
     assert inputs["option_type"] == "call"
 
 
-# ============================================================
-# PricingState: volatility handling
-# ============================================================
-
 def test_volatility_multiplier_applied(base_pricing_state):
     base_pricing_state.vol_mult = 1.25
     inputs = base_pricing_state.resolved_inputs()
@@ -57,10 +45,6 @@ def test_negative_vol_multiplier_clipped(base_pricing_state):
 
     assert inputs["vol"] > 0.0
 
-
-# ============================================================
-# PricingState: time handling
-# ============================================================
 
 def test_time_shift_reduces_maturity(base_pricing_state):
     base_pricing_state.time_shift = 0.25
@@ -76,10 +60,6 @@ def test_time_shift_clipped_at_zero(base_pricing_state):
     assert inputs["T"] > 0.0
 
 
-# ============================================================
-# PricingState: rate handling
-# ============================================================
-
 def test_rate_shift_applied(base_pricing_state):
     base_pricing_state.rate_shift = 0.01
     inputs = base_pricing_state.resolved_inputs()
@@ -93,10 +73,6 @@ def test_negative_rate_allowed(base_pricing_state):
 
     assert inputs["r"] < 0.0
 
-
-# ============================================================
-# PricingState: construction helpers
-# ============================================================
 
 def test_from_dict_constructs_state_correctly():
     state = PricingState.from_dict({
