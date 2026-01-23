@@ -12,7 +12,7 @@ def checkNegativeValues(
 ) -> bool:
     return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
-def black_scholes_formula(
+def get_black_scholes_price(
         S :float, # Underlying Price
         K :float,  # Strike Price
         T :float, # Time to Expiration (6 mths)
@@ -23,33 +23,37 @@ def black_scholes_formula(
 
 ) -> dict:
     start = time.perf_counter()
+    
     if checkNegativeValues(S, K, T, vol):
         raise ValueError("Invalid input: S, K, T and volatility must be positive")
-    # Calculate d1
-    d1 = (math.log(S/K) + (r + 0.5*(vol **2)) * T) / (vol * (math.sqrt(T))) 
-    # Calculate d2
-    d2 = d1 - (vol * (math.sqrt(T)))
+
+    sqrtT = math.sqrt(T)
+
+    d1 = (math.log(S / K) + (r - q + 0.5 * vol ** 2) * T) / (vol * sqrtT)
+    d2 = d1 - vol * sqrtT
 
     if option_type.lower() == "call":
-        # Calculate Call Option Price
-        price = (S * norm.cdf(d1)) - (K * math.exp(-r*T) * norm.cdf(d2))
+        price = (
+            S * math.exp(-q * T) * norm.cdf(d1)
+            - K * math.exp(-r * T) * norm.cdf(d2)
+        )
     elif option_type.lower() == "put":
-        # Calculate Put Option Price
-        price = (K * math.exp(-r*T) * norm.cdf(-d2)) - (S * norm.cdf(-d1))
+        price = (
+            K * math.exp(-r * T) * norm.cdf(-d2)
+            - S * math.exp(-q * T) * norm.cdf(-d1)
+        )
     else:
         raise ValueError("Option type must be 'call' or 'put'")
     end = time.perf_counter()
     bs = {
         "price": price,
-        "d1": d1,
-        "d2": d2,
         "runtime": 0
     }
     setTime(start, end, bs)
     return bs
 
 def black_scholes_price(pricing: PricingState):
-    return black_scholes_formula(
+    return get_black_scholes_price(
         pricing.S,
         pricing.K,
         pricing.T,
