@@ -12,7 +12,7 @@ def checkNegativeValues(
 ) -> bool:
     return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
-def get_black_scholes_price(
+def black_scholes_formula(
         S :float, # Underlying Price
         K :float,  # Strike Price
         T :float, # Time to Expiration (6 mths)
@@ -23,7 +23,7 @@ def get_black_scholes_price(
 
 ) -> dict:
     start = time.perf_counter()
-    if checkNegativeValues(S, K, T, r):
+    if checkNegativeValues(S, K, T, vol):
         raise ValueError("Invalid input: S, K, T and volatility must be positive")
     # Calculate d1
     d1 = (math.log(S/K) + (r + 0.5*(vol **2)) * T) / (vol * (math.sqrt(T))) 
@@ -49,7 +49,7 @@ def get_black_scholes_price(
     return bs
 
 def black_scholes_price(pricing: PricingState):
-    return get_black_scholes_price(
+    return black_scholes_formula(
         pricing.S,
         pricing.K,
         pricing.T,

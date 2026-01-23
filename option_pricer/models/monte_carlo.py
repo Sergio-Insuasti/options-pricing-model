@@ -5,7 +5,7 @@ from typing import Optional
 from option_pricer.utils import setTime
 from option_pricer.core.pricing_state import PricingState
 
-def get_monte_carlo_price(
+def monte_carlo_formula(
     S: float,
     K: float,
     T: float,
@@ -92,7 +92,7 @@ def monte_carlo_price(
     seed: Optional[int],
     return_paths: bool
 ):
-    return get_monte_carlo_price(
+    return monte_carlo_formula(
         pricing.S,
         pricing.K,
         pricing.T,

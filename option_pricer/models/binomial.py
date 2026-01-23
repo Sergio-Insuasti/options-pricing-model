@@ -11,7 +11,7 @@ def checkNegativeValues(
 ) -> bool:
     return S <= 0 or K <= 0 or T <= 0 or vol <= 0
 
-def get_binomial_price(
+def binomial_formula(
     S :float, # Underlying Price
     K :float,  # Strike Price
     T :float, # Time to Expiration (6 mths)
@@ -70,7 +70,7 @@ def binomial_price(
     pricing: PricingState,
     steps: int
 ):
-    return get_binomial_price(
+    return binomial_formula(
         pricing.S,
         pricing.K,
         pricing.T,
