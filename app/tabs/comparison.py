@@ -21,9 +21,9 @@ def render_comparison():
     bs_model, bin_model, mc_model = compute_models()
 
     # Extract prices
-    bs_price = bs_model["price"]
-    bin_price = bin_model["price"]
-    mc_price = mc_model["price"]
+    bs_price = bs_model['price']
+    bin_price = bin_model['price']
+    mc_price = mc_model['price']
 
     comparison_df = pd.DataFrame({
         "Model": [
