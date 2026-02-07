@@ -1,6 +1,7 @@
 import streamlit as st
 
 from app.tabs.graphs.binomial_convergence import display_binomial_convergence
+from app.tabs.graphs.monte_carlo_convergence import display_mc_convergence
 
 # ============================
 # Visual Analysis Tab
@@ -10,7 +11,7 @@ def render_visuals():
     st.header("Visual Analysis")
     
     display_binomial_convergence()
-
+    display_mc_convergence()
     # --------------------------------
     # Interpretation
     # --------------------------------
