@@ -1,6 +1,7 @@
 import streamlit as st
 from app.tabs.overview import render_overview
 from app.tabs.comparison import render_comparison
+from app.tabs.visual_analysis import render_visuals
 from app.tabs.convergence import render_convergence
 from app.tabs.sensitivity import render_sensitivity
 from app.tabs.diagnostics import render_diagnostics
@@ -45,27 +46,31 @@ def render_layout():
     st.markdown(footer_style, unsafe_allow_html=True)
     
 def render_tabs():
-    tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "Overview",
         "Model Comparison",
-        "Convergence",
-        "Sensitivity (Greeks)",
-        "MC Diagnostics"
+        "Visual Analysis",
+        "Convergence [in progress]",
+        "Sensitivity (Greeks) [in progress]",
+        "MC Diagnostics [in progress]"
     ])
     with tab1:
         render_overview()
 
     with tab2:
         render_comparison()
+        
+    with tab3:
+        render_visuals()
 
-    # with tab3:
-    #     render_convergence()
+    with tab4:
+        pass
 
-    # with tab4:
-    #     render_sensitivity()
+    with tab5:
+        pass
 
-    # with tab5:
-    #     render_diagnostics()
+    with tab6:
+        pass
 
 def render_disclaimer():
     st.caption("""DISCLAIMER:""")
