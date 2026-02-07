@@ -58,14 +58,14 @@ def render_tabs():
     with tab2:
         render_comparison()
 
-    with tab3:
-        render_convergence()
+    # with tab3:
+    #     render_convergence()
 
-    with tab4:
-        render_sensitivity()
+    # with tab4:
+    #     render_sensitivity()
 
-    with tab5:
-        render_diagnostics()
+    # with tab5:
+    #     render_diagnostics()
 
 def render_disclaimer():
     st.caption("""DISCLAIMER:""")
