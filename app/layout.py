@@ -46,14 +46,19 @@ def render_layout():
     st.markdown(footer_style, unsafe_allow_html=True)
     
 def render_tabs():
-    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+    # make sure to add tabs as more features are
+    tab1, tab2, tab3 = st.tabs([
         "Overview",
         "Model Comparison",
-        "Visual Analysis",
+        "Visual Analysis"
+    ])
+    
+    """
+    Future features
         "Convergence [in progress]",
         "Sensitivity (Greeks) [in progress]",
         "MC Diagnostics [in progress]"
-    ])
+    """
     with tab1:
         render_overview()
 
@@ -62,15 +67,6 @@ def render_tabs():
         
     with tab3:
         render_visuals()
-
-    with tab4:
-        pass
-
-    with tab5:
-        pass
-
-    with tab6:
-        pass
 
 def render_disclaimer():
     st.caption("""DISCLAIMER:""")
