@@ -59,6 +59,7 @@ def render_tabs():
         "Sensitivity (Greeks) [in progress]",
         "MC Diagnostics [in progress]"
     """
+    
     with tab1:
         render_overview()
 
